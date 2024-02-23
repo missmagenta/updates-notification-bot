@@ -1,4 +1,4 @@
 package edu.java.linkpraser.parsingresult;
 
-public interface ParsingResult {
+public sealed interface ParsingResult permits GithubParsingResult, StackOverFlowParsingResult {
 }

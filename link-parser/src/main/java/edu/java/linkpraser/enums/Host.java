@@ -5,14 +5,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Link {
+public enum Host {
 
-    GITHUB_LINK("github.com"),
-    STACKOVERFLOW_LINK("stackoverflow.com");
+    GITHUB_HOST("github.com"),
+    STACKOVERFLOW_HOST("stackoverflow.com");
 
     private final String value;
-
-    public String getValue() {
-        return value;
-    }
 }
