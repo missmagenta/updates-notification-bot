@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LinkUpdaterScheduler {
 
-    @Scheduled
+    @Scheduled(fixedDelayString = "#{scheduler.interval().toMillis()}")
     public void update() {
-        // to do
+        log.info("Going to db to check for updates");
     }
 }

@@ -1,32 +1,50 @@
 package edu.java.configuration;
 
-import edu.java.client.github.GithubClient;
+import edu.java.client.github.GitHubClient;
+import edu.java.client.github.GitHubRepositoryService;
 import edu.java.client.github.impl.GithubClientImpl;
 import edu.java.client.stackoverflow.StackOverFlowClient;
+import edu.java.client.stackoverflow.StackOverFlowRepositoryService;
 import edu.java.client.stackoverflow.impl.StackOverFlowClientImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.support.WebClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 public class ClientConfiguration {
-
-    private WebClient createWebClient(String url) {
-
+    public <T> T buildClient(Class<T> clientClass, String apiUrl, String contentType, String apiVersion) {
         WebClient webClient = WebClient.builder()
-            .baseUrl(url)
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .baseUrl(apiUrl)
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, contentType)
+            .defaultHeader(HttpHeaders.ACCEPT, apiVersion)
             .build();
+        HttpServiceProxyFactory clientFactory =
+            HttpServiceProxyFactory.builderFor(WebClientAdapter.create(webClient)).build();
+        return clientFactory.createClient(clientClass);
+    }
 
-        return webClient;
+    private GitHubRepositoryService githubRepositoryService() {
+        return buildClient(
+            GitHubRepositoryService.class,
+            GitHubAPIConfiguration.API_BASE_URL,
+            GitHubAPIConfiguration.JSON_CONTENT_TYPE,
+            GitHubAPIConfiguration.API_VERSION_SPEC);
+    }
+    private StackOverFlowRepositoryService stackOverFlowRepositoryService() {
+        return buildClient(
+            StackOverFlowRepositoryService.class,
+            StackOverFlowAPIConfiguration.API_BASE_URL,
+            StackOverFlowAPIConfiguration.JSON_CONTENT_TYPE,
+            StackOverFlowAPIConfiguration.API_VERSION_SPEC);
     }
 
     @Bean
-    GithubClient githubClient() {
-        return new GithubClientImpl();}
+    GitHubClient githubClient() {
+        return new GithubClientImpl(githubRepositoryService()); }
 
     @Bean StackOverFlowClient stackOverFlowClient() {
-        return new StackOverFlowClientImpl(); }
+        return new StackOverFlowClientImpl(stackOverFlowRepositoryService()); }
 }

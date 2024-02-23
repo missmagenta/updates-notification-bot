@@ -1,11 +1,17 @@
 package edu.java.client.github.impl;
 
-import edu.java.client.github.response.EventsResponse;
-import edu.java.client.github.GithubClient;
+import edu.java.client.github.GitHubRepositoryService;
+import edu.java.client.github.dto.EventResponse;
+import edu.java.client.github.GitHubClient;
+import lombok.RequiredArgsConstructor;
+import java.util.List;
 
-public class GithubClientImpl implements GithubClient {
+@RequiredArgsConstructor
+public class GithubClientImpl implements GitHubClient {
+    private final GitHubRepositoryService githubRepositoryService;
+
     @Override
-    public EventsResponse fetchEvents(String username, String repository) {
-        return null;
+    public List<EventResponse> fetchEvents(String username, String repository) {
+        return githubRepositoryService.getEvents(repository, username);
     }
 }
