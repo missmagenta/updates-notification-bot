@@ -1,12 +1,29 @@
 package edu.java.client.github.dto;
 
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.Getter;
+import lombok.Setter;
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 
-@RequiredArgsConstructor
-public abstract class EventResponse {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = CommitCommentEventResponse.class, name = "CommitCommentEvent"),
+    @JsonSubTypes.Type(value = CreateEventResponse.class, name = "CreateEvent"),
+    @JsonSubTypes.Type(value = IssueCommentEventResponse.class, name = "IssuesCommentEvent"),
+    @JsonSubTypes.Type(value = PushEventResponse.class, name = "PushEvent"),
 
-    private final String id;
-    private final String eventType;
-    private final OffsetDateTime createdAt;
+})
+@Getter
+@Setter
+public abstract class EventResponse implements Serializable {
+
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("type")
+    private String eventType;
+    @JsonProperty("created_at")
+    private OffsetDateTime createdAt;
 }

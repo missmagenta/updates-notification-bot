@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-@Getter
 public record ApplicationConfig(
     @NotNull
     Scheduler scheduler

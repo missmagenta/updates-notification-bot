@@ -14,6 +14,6 @@ public class SchedulerConfig {
 
     @Bean
     public Scheduler scheduler() {
-        return applicationConfig.getScheduler();
+        return applicationConfig.scheduler();
     }
 }

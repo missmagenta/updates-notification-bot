@@ -1,26 +1,24 @@
 package edu.java.client.stackoverflow;
 
-import edu.java.client.stackoverflow.dto.AnswerEventResponse;
-import edu.java.client.stackoverflow.dto.CommentEventResponse;
-import edu.java.client.stackoverflow.dto.RelatedQuestionsEventResponse;
-import org.springframework.http.ResponseEntity;
+import edu.java.client.stackoverflow.dto.ListAnswersResponse;
+import edu.java.client.stackoverflow.dto.ListCommentsResponse;
+import edu.java.client.stackoverflow.dto.ListRelatedQuestionsResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;
-import java.util.List;
 
 public interface StackOverFlowRepositoryService {
     @GetExchange("/questions/{id}/answers")
-    List<AnswerEventResponse> getAnswerEvents(
+    ListAnswersResponse getAnswerEvents(
         @PathVariable("id") String questionId
     );
 
     @GetExchange("questions/{id}/comments")
-    List<CommentEventResponse> getCommentsEvents(
+    ListCommentsResponse getCommentsEvents(
         @PathVariable("id") String questionId
     );
 
-    @GetExchange("questions/{ids}/related")
-    List<RelatedQuestionsEventResponse> getRelatedQuestionsEvents(
+    @GetExchange("questions/{id}/related")
+    ListRelatedQuestionsResponse getRelatedQuestionsEvents(
         @PathVariable("id") String questionId
     );
 

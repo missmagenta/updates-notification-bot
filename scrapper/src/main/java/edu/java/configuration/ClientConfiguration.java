@@ -15,11 +15,11 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 public class ClientConfiguration {
-    public <T> T buildClient(Class<T> clientClass, String apiUrl, String contentType, String apiVersion) {
+    public <T> T buildClient(Class<T> clientClass, String apiUrl, String contentType) {
         WebClient webClient = WebClient.builder()
             .baseUrl(apiUrl)
             .defaultHeader(HttpHeaders.CONTENT_TYPE, contentType)
-            .defaultHeader(HttpHeaders.ACCEPT, apiVersion)
+//            .defaultHeader(HttpHeaders.ACCEPT, apiVersion)
             .build();
         HttpServiceProxyFactory clientFactory =
             HttpServiceProxyFactory.builderFor(WebClientAdapter.create(webClient)).build();
@@ -30,15 +30,15 @@ public class ClientConfiguration {
         return buildClient(
             GitHubRepositoryService.class,
             GitHubAPIConfiguration.API_BASE_URL,
-            GitHubAPIConfiguration.JSON_CONTENT_TYPE,
-            GitHubAPIConfiguration.API_VERSION_SPEC);
+            GitHubAPIConfiguration.JSON_CONTENT_TYPE);
+//            GitHubAPIConfiguration.API_VERSION_SPEC);
     }
     private StackOverFlowRepositoryService stackOverFlowRepositoryService() {
         return buildClient(
             StackOverFlowRepositoryService.class,
             StackOverFlowAPIConfiguration.API_BASE_URL,
-            StackOverFlowAPIConfiguration.JSON_CONTENT_TYPE,
-            StackOverFlowAPIConfiguration.API_VERSION_SPEC);
+            StackOverFlowAPIConfiguration.JSON_CONTENT_TYPE);
+//            StackOverFlowAPIConfiguration.API_VERSION_SPEC);
     }
 
     @Bean

@@ -1,12 +1,11 @@
 package edu.java.client.stackoverflow;
 
-import edu.java.client.stackoverflow.dto.AnswerEventResponse;
-import edu.java.client.stackoverflow.dto.CommentEventResponse;
-import edu.java.client.stackoverflow.dto.RelatedQuestionsEventResponse;
-import java.util.List;
+import edu.java.client.stackoverflow.dto.ListAnswersResponse;
+import edu.java.client.stackoverflow.dto.ListCommentsResponse;
+import edu.java.client.stackoverflow.dto.ListRelatedQuestionsResponse;
 
 public interface StackOverFlowClient {
-    List<AnswerEventResponse> fetchAnswerEvents(String questionId);
-    List<CommentEventResponse> fetchCommentEvents(String questionId);
-    List<RelatedQuestionsEventResponse> fetchRelatedQuestionsEvents(String questionId);
+    ListAnswersResponse fetchAnswerEvents(String questionId);
+    ListCommentsResponse fetchCommentEvents(String questionId);
+    ListRelatedQuestionsResponse fetchRelatedQuestionsEvents(String questionId);
 }
