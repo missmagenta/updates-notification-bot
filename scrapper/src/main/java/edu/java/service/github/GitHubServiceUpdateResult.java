@@ -1,4 +1,4 @@
-package edu.java.service;
+package edu.java.service.github;
 
 import java.util.List;
 

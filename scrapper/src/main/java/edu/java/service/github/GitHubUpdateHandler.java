@@ -1,10 +1,10 @@
-package edu.java.service;
+package edu.java.service.github;
 
 import edu.java.client.github.GitHubClient;
 import edu.java.client.github.dto.CommitCommentEventResponse;
 import edu.java.client.github.dto.CreateEventResponse;
 import edu.java.client.github.dto.EventResponse;
-import edu.java.client.github.dto.IssueCommentEventResponse;
+import edu.java.client.github.dto.IssueEventResponse;
 import edu.java.client.github.dto.PushEventResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +12,11 @@ import org.springframework.stereotype.Component;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GitHubServiceHandler {
+public class GitHubUpdateHandler {
 
     private final GitHubClient gitHubClient;
 
@@ -26,57 +25,48 @@ public class GitHubServiceHandler {
         String repository,
         String lastUpdateDate
     ) {
-        System.out.println(owner + repository + lastUpdateDate);
         List<EventResponse> eventResponse = gitHubClient.fetchEvents(owner, repository)
             .stream()
             .filter(Objects::nonNull)
             .filter(resp -> resp.getCreatedAt().isAfter(OffsetDateTime.parse(lastUpdateDate)))
             .toList();
-        System.out.println("resp " + eventResponse);
 
-        GitHubServiceUpdateResult result = new GitHubServiceUpdateResult(eventResponse.stream().
-            map(resp -> getEventDescription(resp)).filter(Objects::nonNull).toList());
-        System.out.println(result);
-        return result;
+        return new GitHubServiceUpdateResult(eventResponse.stream().
+            map(this::getEventDescription).filter(Objects::nonNull).toList());
     }
 
     private String getEventDescription(EventResponse eventResponse) {
         if (eventResponse instanceof CommitCommentEventResponse commitCommentEventResponse) {
             return String.format(
-                "Commit comment %s %s %s %s %s",
+                "Commit Comment Event. Action: %s. Commit id: %s. Body: %s. HTML URL: %s. User: %s%n",
                 commitCommentEventResponse.getPayload().getAction(),
                 commitCommentEventResponse.getPayload().getComment().commitId(),
                 commitCommentEventResponse.getPayload().getComment().body(),
                 commitCommentEventResponse.getPayload().getComment().htmlUrl(),
                 commitCommentEventResponse.getPayload().getComment().user()
             );
-        } else if (eventResponse instanceof IssueCommentEventResponse issueCommentEventResponse) {
+        } else if (eventResponse instanceof IssueEventResponse issueCommentEventResponse) {
             return String.format(
-                "%s %s %s %s %s %s %s %s %s %s %s %s %s",
+                "Issue Comment Event. Action: %s. Issue HTML URL: %s. Issue URL: %s. Issue Title: %s. " +
+                    "Issue State: %s.Issue Body: %s. Issue User: %s%n",
                 issueCommentEventResponse.getPayload().getAction(),
                 issueCommentEventResponse.getPayload().getIssue().htmlUrl(),
                 issueCommentEventResponse.getPayload().getIssue().url(),
                 issueCommentEventResponse.getPayload().getIssue().title(),
                 issueCommentEventResponse.getPayload().getIssue().state(),
                 issueCommentEventResponse.getPayload().getIssue().body(),
-                issueCommentEventResponse.getPayload().getIssue().user(),
-                issueCommentEventResponse.getPayload().getComment().htmlUrl(),
-                issueCommentEventResponse.getPayload().getComment().url(),
-                issueCommentEventResponse.getPayload().getComment().issueUrl(),
-                issueCommentEventResponse.getPayload().getComment().body(),
-                issueCommentEventResponse.getPayload().getComment().updateDate(),
-                issueCommentEventResponse.getPayload().getComment().user()
+                issueCommentEventResponse.getPayload().getIssue().user()
             );
         } else if (eventResponse instanceof CreateEventResponse createEventResponse) {
 
             return String.format(
-                "Create Event %s %s",
+                "Create Event. Ref: %s. Ref type: %s%n",
                 createEventResponse.getPayload().getRef(),
                 createEventResponse.getPayload().getRefType()
                 );
         } else if (eventResponse instanceof PushEventResponse pushEventResponse) {
             return String.format(
-                "push Event %s %s %s",
+                "Push Event. Push ID: %s. Commits pushed: %s. Ref: %s%n",
                 pushEventResponse.getPayload().getPushId(),
                 pushEventResponse.getPayload().getCommits(),
                 pushEventResponse.getPayload().getRef()

@@ -7,6 +7,8 @@ app:
 spring:
   application:
     name: scrapper
+  codec:
+    max-in-memory-size: 500KB
 
 server:
   port: 8080

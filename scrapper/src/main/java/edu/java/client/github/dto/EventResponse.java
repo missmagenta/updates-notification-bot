@@ -8,11 +8,16 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.EXISTING_PROPERTY,
+    property = "type",
+    defaultImpl = Void.class
+)
 @JsonSubTypes({
     @JsonSubTypes.Type(value = CommitCommentEventResponse.class, name = "CommitCommentEvent"),
     @JsonSubTypes.Type(value = CreateEventResponse.class, name = "CreateEvent"),
-    @JsonSubTypes.Type(value = IssueCommentEventResponse.class, name = "IssuesCommentEvent"),
+    @JsonSubTypes.Type(value = IssueEventResponse.class, name = "IssuesCommentEvent"),
     @JsonSubTypes.Type(value = PushEventResponse.class, name = "PushEvent"),
 
 })

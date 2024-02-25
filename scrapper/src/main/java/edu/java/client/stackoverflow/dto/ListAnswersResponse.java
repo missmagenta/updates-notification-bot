@@ -1,9 +1,11 @@
 package edu.java.client.stackoverflow.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Getter
 public class ListAnswersResponse {
     @JsonProperty("items")
     private List<AnswerEventResponse> answers;

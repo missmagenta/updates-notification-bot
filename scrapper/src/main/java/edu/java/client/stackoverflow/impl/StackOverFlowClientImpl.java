@@ -13,7 +13,7 @@ public class StackOverFlowClientImpl implements StackOverFlowClient {
 
     @Override
     public ListAnswersResponse fetchAnswerEvents(String questionId) {
-        return stackOverFlowRepositoryService.getAnswerEvents(questionId);
+        return stackOverFlowRepositoryService.getAnswerEvents(questionId, null);
     }
 
     @Override

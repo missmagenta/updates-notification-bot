@@ -12,7 +12,6 @@ public class GithubClientImpl implements GitHubClient {
 
     @Override
     public List<EventResponse> fetchEvents(String username, String repository) {
-        System.out.println(username + repository);
         return githubRepositoryService.getEvents(repository, username);
     }
 }

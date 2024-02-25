@@ -3,7 +3,6 @@ package edu.java.client.github.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
