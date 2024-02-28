@@ -1,6 +1,6 @@
 package edu.java.bot.handler;
 
-import edu.java.bot.enums.Command;
+import edu.java.bot.handler.enums.Command;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import edu.java.bot.utils.ConstantReplies;
 import lombok.extern.slf4j.Slf4j;

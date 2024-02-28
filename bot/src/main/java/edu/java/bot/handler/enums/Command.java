@@ -1,4 +1,4 @@
-package edu.java.bot.enums;
+package edu.java.bot.handler.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

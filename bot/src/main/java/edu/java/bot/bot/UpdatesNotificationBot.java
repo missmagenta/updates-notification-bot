@@ -1,7 +1,7 @@
 package edu.java.bot.bot;
 
 import edu.java.bot.configuration.ApplicationConfig;
-import edu.java.bot.enums.Command;
+import edu.java.bot.handler.enums.Command;
 import edu.java.bot.utils.ConstantReplies;
 import edu.java.bot.handler.CommandsHandler;
 import jakarta.validation.constraints.NotNull;

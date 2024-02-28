@@ -1,6 +1,6 @@
 package edu.java.bot.handler;
 
-import edu.java.bot.enums.Command;
+import edu.java.bot.handler.enums.Command;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

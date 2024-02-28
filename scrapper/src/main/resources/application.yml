@@ -10,6 +10,10 @@ spring:
   codec:
     max-in-memory-size: 500KB
 
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui"
+
 server:
   port: 8080
 
