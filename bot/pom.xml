@@ -158,6 +158,12 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.9.3</version>
         </dependency>
+        <dependency>
+            <groupId>edu.java</groupId>
+            <artifactId>scrapper-model</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

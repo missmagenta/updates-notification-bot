@@ -1,6 +1,6 @@
 package edu.java.client.bot;
 
-import edu.java.request.LinkUpdateRequest;
+import edu.java.dto.request.LinkUpdateRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.PostExchange;
 

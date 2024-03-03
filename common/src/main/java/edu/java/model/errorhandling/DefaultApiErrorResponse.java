@@ -1,5 +1,6 @@
 package edu.java.model.errorhandling;
 
+import edu.java.model.errorhandling.dto.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,9 +14,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @ApiResponse(content = @Content(
-    schema = @Schema(implementation = edu.java.model.errorhandling.dto.ApiErrorResponse.class),
+    schema = @Schema(implementation = ApiErrorResponse.class),
     mediaType = MediaType.APPLICATION_JSON_VALUE))
-public @interface ApiErrorResponse {
+public @interface DefaultApiErrorResponse {
     @AliasFor(annotation = ApiResponse.class, attribute = "code")
     String code();
 

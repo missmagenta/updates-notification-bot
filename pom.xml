@@ -51,6 +51,7 @@
         <module>link-parser</module>
         <module>common</module>
         <module>bot-model</module>
+        <module>scrapper-model</module>
     </modules>
 
     <dependencyManagement>

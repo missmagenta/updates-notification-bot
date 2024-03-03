@@ -4,7 +4,8 @@ import edu.java.dto.request.AddLinkRequest;
 import edu.java.dto.request.RemoveLinkRequest;
 import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinkResponse;
-import edu.java.model.errorhandling.ApiErrorResponse;
+import edu.java.model.errorhandling.DefaultApiErrorResponse;
+import edu.java.model.errorhandling.dto.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
-@ApiErrorResponse(code = "400", description = "Некорректные параметры запроса")
+@DefaultApiErrorResponse(code = "400", description = "Некорректные параметры запроса")
 @RequestMapping("/links")
 @RestController
 public class LinksController {
@@ -41,10 +43,10 @@ public class LinksController {
                      ))
     })
     @GetMapping
-    public void getTrackedLinks(@RequestHeader(TG_CHAT_ID) int id) {
-
+    public ResponseEntity<ListLinkResponse> getTrackedLinks(@RequestHeader(TG_CHAT_ID) int id) {
+        log.info("Received links that you track");
+        return null;
     }
-
 
     @Operation(summary = "Добавить отслеживание ссылки")
     @ApiResponses(value = {
@@ -56,11 +58,12 @@ public class LinksController {
                      ))
     })
     @PostMapping
-    public void addLinkToTrack(
+    public ResponseEntity<LinkResponse> addLinkToTrack(
         @RequestHeader(TG_CHAT_ID) int id,
         @Valid @RequestBody AddLinkRequest addLinkRequest
-        ) {
-
+    ) {
+        log.info("New link added");
+        return null;
     }
 
     @Operation(summary = "Убрать отслеживание ссылки")
@@ -71,13 +74,17 @@ public class LinksController {
                          schema = @Schema(implementation = LinkResponse.class),
                          mediaType = MediaType.APPLICATION_JSON_VALUE)),
         @ApiResponse(responseCode = "404",
-                     description = "Ссылка не найдена")
+                     description = "Ссылка не найдена",
+                     content = @Content(
+                         schema = @Schema(implementation = ApiErrorResponse.class),
+                         mediaType = MediaType.APPLICATION_JSON_VALUE))
     })
     @DeleteMapping
-    public void deleteLink(
+    public ResponseEntity<LinkResponse> deleteLink(
         @RequestHeader(TG_CHAT_ID) int id,
         @Valid @RequestBody RemoveLinkRequest removeLinkRequest
     ) {
-
+        log.info("Link {} removed", removeLinkRequest.link());
+        return null;
     }
 }

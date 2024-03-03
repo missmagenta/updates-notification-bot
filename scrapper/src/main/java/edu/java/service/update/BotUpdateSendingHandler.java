@@ -1,7 +1,7 @@
 package edu.java.service.update;
 
 import edu.java.client.bot.BotClient;
-import edu.java.request.LinkUpdateRequest;
+import edu.java.dto.request.LinkUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class BotUpdateSendingHandler {
             linkUpdateRequest.id(),
             linkUpdateRequest.url(),
             linkUpdateRequest.description(),
-            linkUpdateRequest.thChatIds()
+            linkUpdateRequest.tgChatIds()
         );
     }
 }

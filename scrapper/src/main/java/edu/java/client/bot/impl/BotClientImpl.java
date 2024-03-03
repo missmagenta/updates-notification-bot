@@ -1,6 +1,8 @@
-package edu.java.client.bot;
+package edu.java.client.bot.impl;
 
-import edu.java.request.LinkUpdateRequest;
+import edu.java.client.bot.BotClient;
+import edu.java.client.bot.BotRepositoryService;
+import edu.java.dto.request.LinkUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.request.LinkUpdateRequest;
+import edu.java.dto.request.LinkUpdateRequest;
 import edu.java.service.github.GitHubUpdateHandler;
 import edu.java.service.stackoverflow.StackOverFlowUpdateHandler;
 import edu.java.service.update.BotUpdateSendingHandler;
