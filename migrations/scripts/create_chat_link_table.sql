@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset magenta: 1_29.02.2024
+--changeset magenta:1_29.02.2024
 CREATE TABLE IF NOT EXISTS "chat_link" (
     "chat_id" INTEGER NOT NULL,
     "link_id" INTEGER NOT NULL,
@@ -10,3 +10,5 @@ CREATE TABLE IF NOT EXISTS "chat_link" (
     FOREIGN KEY ("chat_id") REFERENCES "chat" ("id"),
     FOREIGN KEY ("link_id") REFERENCES "link" ("id")
 )
+
+

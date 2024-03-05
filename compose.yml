@@ -5,8 +5,8 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_DB: scrapper
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgresql:/var/lib/postgresql/data
     networks:
@@ -19,7 +19,7 @@ services:
     command:
       - --changelog-file=master.xml
       - --driver=org.postgresql.Driver
-      - --url=jdbc:postgresql://postgresql:5432/scrapper
+      - --url=jdbc:postgresql://localhost:5432/scrapper
       - --username=${POSTGRES_USERNAME}
       - --password=${POSTGRES_PASSWORD}
       - update
