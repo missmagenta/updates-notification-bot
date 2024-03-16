@@ -1,4 +1,4 @@
-package edu.java.configuration;
+package edu.java.configuration.client;
 
 import edu.java.client.github.GitHubClient;
 import edu.java.client.github.GitHubRepositoryService;

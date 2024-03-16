@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class BotUpdateSendingHandler {
+public class RestBotUpdateSender {
     private final BotClient botClient;
 
-    public void handleSendingUpdates(LinkUpdateRequest linkUpdateRequest) {
+    public void sendUpdates(LinkUpdateRequest linkUpdateRequest) {
         botClient.sendUpdate(
             linkUpdateRequest.id(),
             linkUpdateRequest.url(),

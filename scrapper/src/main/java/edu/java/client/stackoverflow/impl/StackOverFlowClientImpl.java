@@ -6,23 +6,28 @@ import edu.java.client.stackoverflow.dto.ListAnswersResponse;
 import edu.java.client.stackoverflow.dto.ListCommentsResponse;
 import edu.java.client.stackoverflow.dto.ListRelatedQuestionsResponse;
 import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 public class StackOverFlowClientImpl implements StackOverFlowClient {
     private final StackOverFlowRepositoryService stackOverFlowRepositoryService;
 
     @Override
-    public ListAnswersResponse fetchAnswerEvents(String questionId) {
+    public ListAnswersResponse fetchAnswerEvents(
+        String questionId, LocalDateTime lastUpdate
+        ) {
         return stackOverFlowRepositoryService.getAnswerEvents(questionId, null);
     }
 
     @Override
-    public ListCommentsResponse fetchCommentEvents(String questionId) {
+    public ListCommentsResponse fetchCommentEvents(
+        String questionId, LocalDateTime lastUpdate) {
         return stackOverFlowRepositoryService.getCommentsEvents(questionId);
     }
 
     @Override
-    public ListRelatedQuestionsResponse fetchRelatedQuestionsEvents(String questionId) {
+    public ListRelatedQuestionsResponse fetchRelatedQuestionsEvents(
+        String questionId, LocalDateTime lastUpdate) {
         return stackOverFlowRepositoryService.getRelatedQuestionsEvents(questionId);
     }
 }

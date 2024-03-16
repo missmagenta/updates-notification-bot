@@ -6,6 +6,7 @@ import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinkResponse;
 import edu.java.model.errorhandling.DefaultApiErrorResponse;
 import edu.java.model.errorhandling.dto.ApiErrorResponse;
+import edu.java.service.jdbc.JdbcLinkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LinksController {
 
     public static final String TG_CHAT_ID = "Tg-Chat-Id";
+    private final JdbcLinkService linkService;
 
     @Operation(summary = "Получить все отслеживаемые ссылки")
     @ApiResponses(value = {
@@ -45,7 +47,7 @@ public class LinksController {
     @GetMapping
     public ResponseEntity<ListLinkResponse> getTrackedLinks(@RequestHeader(TG_CHAT_ID) int id) {
         log.info("Received links that you track");
-        return null;
+        return ResponseEntity.ok(linkService.listAll(id));
     }
 
     @Operation(summary = "Добавить отслеживание ссылки")
@@ -63,7 +65,7 @@ public class LinksController {
         @Valid @RequestBody AddLinkRequest addLinkRequest
     ) {
         log.info("New link added");
-        return null;
+        return ResponseEntity.ok(linkService.add(id, addLinkRequest.link()));
     }
 
     @Operation(summary = "Убрать отслеживание ссылки")
@@ -85,6 +87,6 @@ public class LinksController {
         @Valid @RequestBody RemoveLinkRequest removeLinkRequest
     ) {
         log.info("Link {} removed", removeLinkRequest.link());
-        return null;
+        return ResponseEntity.ok(linkService.remove(id, removeLinkRequest.link()));
     }
 }

@@ -2,6 +2,7 @@ package edu.java.controller;
 
 import edu.java.model.errorhandling.DefaultApiErrorResponse;
 import edu.java.model.errorhandling.dto.ApiErrorResponse;
+import edu.java.service.jdbc.JdbcTgChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tg-chat")
 @RestController
 public class TgChatController {
+    private final JdbcTgChatService chatService;
 
     @Operation(summary = "Зарегистрировать чат")
     @ApiResponses(value = {
@@ -32,6 +34,7 @@ public class TgChatController {
     @PostMapping("/{id}")
     public void registerChat(@PathVariable("id") int id) {
         log.info("Chat is registered");
+        chatService.register(id);
     }
 
     @Operation(summary = "Удалить чат")
@@ -48,6 +51,7 @@ public class TgChatController {
     @DeleteMapping("/{id}")
     public void deleteChat(@PathVariable("id") int id) {
         log.info("Chat removed");
+        chatService.unregister(id);
     }
 
 }
