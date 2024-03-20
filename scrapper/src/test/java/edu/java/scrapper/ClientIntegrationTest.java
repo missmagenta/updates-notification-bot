@@ -3,6 +3,7 @@ package edu.java.scrapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import edu.java.client.github.GitHubClient;
 import edu.java.client.stackoverflow.StackOverFlowClient;
+import edu.java.configuration.ApplicationConfig;
 import edu.java.configuration.client.ClientConfiguration;
 import edu.java.service.github.GitHubServiceUpdateResult;
 import edu.java.service.github.GitHubUpdateHandler;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -25,6 +27,8 @@ import static org.junit.Assert.assertNotNull;
 public class ClientIntegrationTest {
 
     private ClientConfiguration clientConfiguration;
+    @MockBean
+    private ApplicationConfig applicationConfig;
     private GitHubClient gitHubClient;
     private StackOverFlowClient stackOverFlowClient;
 
@@ -33,7 +37,7 @@ public class ClientIntegrationTest {
 
     @Before
     public void setUp() {
-        clientConfiguration = new ClientConfiguration();
+        clientConfiguration = new ClientConfiguration(applicationConfig);
         gitHubClient = clientConfiguration.githubClient();
         stackOverFlowClient = clientConfiguration.stackOverFlowClient();
     }

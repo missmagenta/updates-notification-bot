@@ -2,5 +2,5 @@ package edu.java.scheduler;
 
 import java.time.Duration;
 
-public record Scheduler(Duration interval) {
+public record Scheduler(boolean enable, Duration interval, Duration forceCheckDelay) {
 }
