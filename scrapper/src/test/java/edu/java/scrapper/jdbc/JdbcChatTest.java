@@ -1,12 +1,14 @@
 package edu.java.scrapper.jdbc;
 
 import edu.java.domain.dao.jdbc.JdbcChatDao;
-import edu.java.dto.response.LinkResponse;
+import edu.java.domain.dao.jdbc.JdbcChatLinkDao;
 import edu.java.model.Chat;
+import edu.java.scrapper.IntegrationEnvironment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -14,9 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class JdbcChatTest {
+@TestPropertySource(properties = "spring.liquibase.enabled=false")
+public class JdbcChatTest extends IntegrationEnvironment {
     @Autowired
-    private JdbcChatDao chatRepository;
+    private JdbcChatDao chatDao;
 
     @Test
     @Transactional
@@ -24,8 +27,8 @@ public class JdbcChatTest {
     void addTest() {
         Integer id = 123;
 
-        chatRepository.add(id);
-        List<Chat> chats = chatRepository.findAll();
+        chatDao.add(id);
+        List<Chat> chats = chatDao.findAll();
 
         assertAll(
             () -> assertEquals(1, chats.size()),
@@ -38,10 +41,10 @@ public class JdbcChatTest {
     @Rollback
     void removeTest() {
         Integer id = 888;
-        chatRepository.add(id);
+        chatDao.add(id);
 
-        chatRepository.remove(id);
-        List<Chat> chats = chatRepository.findAll();
+        chatDao.remove(id);
+        List<Chat> chats = chatDao.findAll();
 
         assertTrue(chats.isEmpty());
     }

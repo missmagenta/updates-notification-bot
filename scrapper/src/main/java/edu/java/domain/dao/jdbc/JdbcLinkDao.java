@@ -19,8 +19,11 @@ public class JdbcLinkDao implements LinkDao {
     @Transactional
     public Integer add(String url) {
         String sql = "INSERT INTO link (name, last_update_date) VALUES (?, ?) RETURNING id";
-        return jdbcTemplate.update(sql,
-            Long.class, url, Timestamp.valueOf(LocalDateTime.now())
+        return jdbcTemplate.queryForObject(
+            sql,
+            Integer.class,
+            url,
+            Timestamp.valueOf(LocalDateTime.now())
         );
     }
 
