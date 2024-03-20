@@ -1,11 +1,18 @@
 app:
+  database-interaction: jdbc
   scheduler:
     enable: true
     interval: 10s
     force-check-delay: 10s
+
   bot-api-url: "http://localhost:8090"
 
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
   application:
     name: scrapper
   codec:

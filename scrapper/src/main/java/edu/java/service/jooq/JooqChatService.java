@@ -1,12 +1,20 @@
 package edu.java.service.jooq;
 
-import edu.java.domain.dao.jooq.JooqChatDao;
+import edu.java.domain.dao.ChatDao;
+import edu.java.domain.dao.ChatLinkDao;
 import edu.java.service.TgChatService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 
-@RequiredArgsConstructor
 public class JooqChatService implements TgChatService {
-    private final JooqChatDao chatDao;
+    private final ChatDao chatDao;
+    private final ChatLinkDao chatLinkDao;
+
+    public JooqChatService(
+        @Qualifier("jooqChatDao") ChatDao chatDao,
+        @Qualifier("jooqChatLinkDao") ChatLinkDao chatLinkDao) {
+        this.chatDao = chatDao;
+        this.chatLinkDao = chatLinkDao;
+    }
 
     @Override
     public void register(int tgChatId) {
@@ -15,6 +23,7 @@ public class JooqChatService implements TgChatService {
 
     @Override
     public void unregister(int tgChatId) {
+        chatLinkDao.removeByChatId(tgChatId);
         chatDao.remove(tgChatId);
     }
 }

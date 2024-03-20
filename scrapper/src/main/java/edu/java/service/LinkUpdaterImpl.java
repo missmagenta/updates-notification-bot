@@ -2,7 +2,7 @@ package edu.java.service;
 
 import edu.java.dto.request.LinkUpdateRequest;
 import edu.java.dto.response.ListLinkResponse;
-import edu.java.linkpraser.parser.LinkParser;
+import edu.java.linkpraser.parser.LinkParserHandler;
 import edu.java.linkpraser.parsingresult.ParsingResult;
 import edu.java.linkpraser.parsingresult.GithubParsingResult;
 import edu.java.linkpraser.parsingresult.StackOverFlowParsingResult;
@@ -10,25 +10,38 @@ import edu.java.model.Chat;
 import edu.java.model.Link;
 import edu.java.service.github.GitHubServiceUpdateResult;
 import edu.java.service.github.GitHubUpdateHandler;
-import edu.java.service.jdbc.JdbcLinkService;
 import edu.java.service.stackoverflow.StackOverFlowUpdateHandler;
 import edu.java.service.update.RestBotUpdateSender;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
 public class LinkUpdaterImpl implements LinkUpdater {
     private final RestBotUpdateSender restBotUpdateSender;
-    private final LinkParser linkParser;
+    private final LinkParserHandler linkParserHandler;
     private final GitHubUpdateHandler gitHubUpdateHandler;
     private final StackOverFlowUpdateHandler stackOverFlowUpdateHandler;
-    private final JdbcLinkService linkService;
+
+    private final LinkService linkService;
     private static final Long PERIOD_TO_CHECK_LINK_SECONDS = 500L;
+
+    public LinkUpdaterImpl(
+        RestBotUpdateSender restBotUpdateSender,
+        LinkParserHandler linkParserHandler,
+        GitHubUpdateHandler gitHubUpdateHandler,
+        StackOverFlowUpdateHandler stackOverFlowUpdateHandler,
+        @Qualifier("jdbcLinkService") LinkService linkService
+    ) {
+        this.restBotUpdateSender = restBotUpdateSender;
+        this.linkParserHandler = linkParserHandler;
+        this.gitHubUpdateHandler = gitHubUpdateHandler;
+        this.stackOverFlowUpdateHandler = stackOverFlowUpdateHandler;
+        this.linkService = linkService;
+    }
 
     @Override
     public void update() {
@@ -40,7 +53,7 @@ public class LinkUpdaterImpl implements LinkUpdater {
                 .map(Chat::getId)
                 .toList();
 
-            ParsingResult parsingResult = linkParser.parse(link.url());
+            ParsingResult parsingResult = linkParserHandler.checkLink(link.url());
             List<String> eventDescriptions = collectEventUpdatesFromExternalHandlers(parsingResult, linkEntity);
             eventDescriptions.forEach(eventDescription ->
                 restBotUpdateSender.sendUpdates(new LinkUpdateRequest(

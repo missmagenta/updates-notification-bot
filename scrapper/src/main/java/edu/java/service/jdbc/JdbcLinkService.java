@@ -2,25 +2,27 @@ package edu.java.service.jdbc;
 
 import edu.java.domain.dao.ChatLinkDao;
 import edu.java.domain.dao.LinkDao;
-import edu.java.domain.dao.jdbc.JdbcChatLinkDao;
-import edu.java.domain.dao.jdbc.JdbcLinkDao;
 import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinkResponse;
 import edu.java.model.ChatLink;
 import edu.java.model.Link;
 import edu.java.service.LinkService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessResourceFailureException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
-    private final JdbcLinkDao linkDao;
-    private final JdbcChatLinkDao chatLinkDao;
+    private final LinkDao linkDao;
+    private final ChatLinkDao chatLinkDao;
+
+    public JdbcLinkService(
+        @Qualifier("jdbcLinkDao") LinkDao linkDao,
+        @Qualifier("jdbcChatLinkDao") ChatLinkDao chatLinkDao) {
+        this.linkDao = linkDao;
+        this.chatLinkDao = chatLinkDao;
+    }
 
     @Override
     public LinkResponse add(int tgChatId, String url) {

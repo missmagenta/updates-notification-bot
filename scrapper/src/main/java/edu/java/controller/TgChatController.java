@@ -2,14 +2,14 @@ package edu.java.controller;
 
 import edu.java.model.errorhandling.DefaultApiErrorResponse;
 import edu.java.model.errorhandling.dto.ApiErrorResponse;
-import edu.java.service.jdbc.JdbcTgChatService;
+import edu.java.service.TgChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RequiredArgsConstructor
+
 @DefaultApiErrorResponse(code = "400", description = "Некорректные параметры запроса")
 @RequestMapping("/tg-chat")
 @RestController
 public class TgChatController {
-    private final JdbcTgChatService chatService;
+    private final TgChatService chatService;
+
+    public TgChatController(
+        @Qualifier("jdbcTgChatService") TgChatService chatService) {
+        this.chatService = chatService;
+    }
 
     @Operation(summary = "Зарегистрировать чат")
     @ApiResponses(value = {

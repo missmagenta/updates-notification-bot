@@ -6,15 +6,15 @@ import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinkResponse;
 import edu.java.model.errorhandling.DefaultApiErrorResponse;
 import edu.java.model.errorhandling.dto.ApiErrorResponse;
-import edu.java.service.jdbc.JdbcLinkService;
+import edu.java.service.LinkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,14 +26,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RequiredArgsConstructor
 @DefaultApiErrorResponse(code = "400", description = "Некорректные параметры запроса")
 @RequestMapping("/links")
 @RestController
 public class LinksController {
 
     public static final String TG_CHAT_ID = "Tg-Chat-Id";
-    private final JdbcLinkService linkService;
+    private final LinkService linkService;
+
+    public LinksController(@Qualifier("jdbcLinkService") LinkService linkService) {
+        this.linkService = linkService;
+    }
 
     @Operation(summary = "Получить все отслеживаемые ссылки")
     @ApiResponses(value = {
