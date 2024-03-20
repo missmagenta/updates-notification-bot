@@ -25,7 +25,7 @@ public class JooqLinkDao implements LinkDao {
     public Integer add(String url) {
         return Objects.requireNonNull(dslContext.insertInto(LINK)
                 .set(LINK.NAME, url)
-                .set(LINK.LASTUPDATEDATE, LocalDateTime.now())
+                .set(LINK.LAST_UPDATE_DATE, LocalDateTime.now())
                 .returningResult(LINK.ID)
                 .fetchOne())
             .into(Integer.class);
@@ -92,7 +92,7 @@ public class JooqLinkDao implements LinkDao {
         LocalDateTime timePeriod = LocalDateTime.now().minusSeconds(seconds);
         return dslContext.select(LINK.ID)
             .from(LINK)
-            .where(LINK.LASTUPDATEDATE.lessThan(timePeriod))
+            .where(LINK.LAST_UPDATE_DATE.lessThan(timePeriod))
             .fetchStream()
             .map(alias -> alias.get(LINK.ID))
             .toList();
@@ -101,7 +101,7 @@ public class JooqLinkDao implements LinkDao {
     @Override
     public void update(int id, LocalDateTime lastUpdate) {
         dslContext.update(LINK)
-            .set(LINK.LASTUPDATEDATE, lastUpdate)
+            .set(LINK.LAST_UPDATE_DATE, lastUpdate)
             .where(LINK.ID.eq(id))
             .execute();
     }
