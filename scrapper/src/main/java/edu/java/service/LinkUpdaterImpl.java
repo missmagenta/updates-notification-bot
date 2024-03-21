@@ -3,8 +3,8 @@ package edu.java.service;
 import edu.java.dto.request.LinkUpdateRequest;
 import edu.java.dto.response.ListLinkResponse;
 import edu.java.linkpraser.parser.LinkParserHandler;
-import edu.java.linkpraser.parsingresult.ParsingResult;
 import edu.java.linkpraser.parsingresult.GithubParsingResult;
+import edu.java.linkpraser.parsingresult.ParsingResult;
 import edu.java.linkpraser.parsingresult.StackOverFlowParsingResult;
 import edu.java.model.Chat;
 import edu.java.model.Link;
@@ -12,12 +12,13 @@ import edu.java.service.github.GitHubServiceUpdateResult;
 import edu.java.service.github.GitHubUpdateHandler;
 import edu.java.service.stackoverflow.StackOverFlowUpdateHandler;
 import edu.java.service.update.RestBotUpdateSender;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LinkUpdaterImpl implements LinkUpdater {
@@ -100,12 +101,9 @@ public class LinkUpdaterImpl implements LinkUpdater {
                 linkService.update(linkEntity.getId(), LocalDateTime.now());
             }
 
-            List<String> combinedList = new ArrayList<>();
-            combinedList.addAll(answers);
-            combinedList.addAll(comments);
-            combinedList.addAll(relatedQuestions);
-
-            return combinedList;
+            return Stream.of(answers, comments, relatedQuestions)
+                .flatMap(Collection::stream)
+                .toList();
         }
         return Collections.emptyList();
     }
