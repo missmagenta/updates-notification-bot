@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
     schema = @Schema(implementation = ApiErrorResponse.class),
     mediaType = MediaType.APPLICATION_JSON_VALUE))
 public @interface DefaultApiErrorResponse {
-    @AliasFor(annotation = ApiResponse.class, attribute = "code")
+    @AliasFor(annotation = ApiResponse.class, attribute = "responseCode")
     String code();
 
     @AliasFor(annotation = ApiResponse.class, attribute = "description")

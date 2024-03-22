@@ -1,4 +1,4 @@
-package edu.java.configuration;
+package edu.java.configuration.client;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;

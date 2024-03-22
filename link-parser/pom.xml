@@ -11,8 +11,7 @@
     </parent>
 
     <artifactId>link-parser</artifactId>
-    <version>${revision}</version>
-    <packaging>jar</packaging>
+    <version>1.0</version>
 
     <dependencies>
         <dependency>
@@ -37,6 +36,12 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
 
     </dependencies>
 

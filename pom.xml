@@ -52,6 +52,7 @@
         <module>common</module>
         <module>bot-model</module>
         <module>scrapper-model</module>
+        <module>scrapper-jooq</module>
     </modules>
 
     <dependencyManagement>

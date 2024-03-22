@@ -3,16 +3,19 @@ package edu.java.scrapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import edu.java.client.github.GitHubClient;
 import edu.java.client.stackoverflow.StackOverFlowClient;
-import edu.java.configuration.ClientConfiguration;
+import edu.java.configuration.ApplicationConfig;
+import edu.java.configuration.client.ClientConfiguration;
 import edu.java.service.github.GitHubServiceUpdateResult;
 import edu.java.service.github.GitHubUpdateHandler;
 import edu.java.service.stackoverflow.StackOverFlowUpdateHandler;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -24,6 +27,8 @@ import static org.junit.Assert.assertNotNull;
 public class ClientIntegrationTest {
 
     private ClientConfiguration clientConfiguration;
+    @MockBean
+    private ApplicationConfig applicationConfig;
     private GitHubClient gitHubClient;
     private StackOverFlowClient stackOverFlowClient;
 
@@ -32,7 +37,7 @@ public class ClientIntegrationTest {
 
     @Before
     public void setUp() {
-        clientConfiguration = new ClientConfiguration();
+        clientConfiguration = new ClientConfiguration(applicationConfig);
         gitHubClient = clientConfiguration.githubClient();
         stackOverFlowClient = clientConfiguration.stackOverFlowClient();
     }
@@ -58,7 +63,7 @@ public class ClientIntegrationTest {
                 .withHeader("Content-Type", "application/json")));
 
         StackOverFlowUpdateHandler stackOverFlowUpdateHandler = new StackOverFlowUpdateHandler(stackOverFlowClient);
-        List<String> answers = stackOverFlowUpdateHandler.handleAnswers("78057817", "2024-01-01T00:00:00Z");
+        List<String> answers = stackOverFlowUpdateHandler.handleAnswers("78057817", LocalDateTime.parse("2024-01-01T00:00:00Z"));
 
         assertNotNull(answers);
     }
