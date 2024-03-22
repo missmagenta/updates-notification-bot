@@ -4,7 +4,6 @@ import edu.java.domain.dao.ChatLinkDao;
 import edu.java.domain.dao.LinkDao;
 import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinkResponse;
-import edu.java.model.ChatLink;
 import edu.java.model.Link;
 import edu.java.service.LinkService;
 import java.time.LocalDateTime;
@@ -49,12 +48,12 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public ListLinkResponse listAll(int tgChatId) {
-        List<ChatLink> links = chatLinkDao.findAllLinksByChatId(tgChatId);
-        List<LinkResponse> responses = links
+        List<Integer> linksIds = chatLinkDao.findAllLinksByChatId(tgChatId);
+        List<LinkResponse> responses = linksIds
             .stream()
-            .map(chatLink -> {
-                String url = linkDao.findUrlById(chatLink.getLinkId());
-                return new LinkResponse(chatLink.getLinkId(), url);
+            .map(id -> {
+                String url = linkDao.findUrlById(id);
+                return new LinkResponse(id, url);
             })
             .toList();
         return new ListLinkResponse(responses, responses.size());

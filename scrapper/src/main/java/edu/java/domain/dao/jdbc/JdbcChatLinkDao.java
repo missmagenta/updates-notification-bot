@@ -1,13 +1,12 @@
 package edu.java.domain.dao.jdbc;
 
 import edu.java.domain.dao.ChatLinkDao;
-import edu.java.model.ChatLink;
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 public class JdbcChatLinkDao implements ChatLinkDao {
@@ -42,13 +41,8 @@ public class JdbcChatLinkDao implements ChatLinkDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ChatLink> findAllLinksByChatId(int chatId) {
+    public List<Integer> findAllLinksByChatId(int chatId) {
         return jdbcTemplate.query("SELECT * FROM chat_link WHERE chat_link.chat_id = ?",
-            (rs, rowNum) -> new ChatLink(
-            rs.getInt("chat_id"),
-            rs.getInt("link_id"),
-            rs.getTimestamp("link_started_track_date").toLocalDateTime(),
-            rs.getTimestamp("link_untrack_date").toLocalDateTime()),
-            chatId);
+            (rs, rowNum) -> rs.getInt("link_id"), chatId);
     }
 }

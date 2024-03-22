@@ -1,7 +1,6 @@
 package edu.java.domain.dao.jooq;
 
 import edu.java.domain.dao.ChatLinkDao;
-import edu.java.model.ChatLink;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,13 +61,12 @@ public class JooqChatLinkDao implements ChatLinkDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ChatLink> findAllLinksByChatId(int chatId) {
+    public List<Integer> findAllLinksByChatId(int chatId) {
         return dslContext
             .selectFrom(CHAT_LINK)
             .where(CHAT_LINK.CHAT_ID.eq(chatId))
             .fetchStream()
-            .map(alias -> new ChatLink(
-                chatId, alias.get(CHAT_LINK.LINK_ID), alias.getLinkStartedTrackDate(), alias.getLinkUntrackDate()))
+            .map(alias -> alias.get(CHAT_LINK.LINK_ID))
             .toList();
     }
 }

@@ -1,11 +1,12 @@
 app:
-  database-interaction: jdbc
   scheduler:
     enable: true
     interval: 10s
     force-check-delay: 10s
 
+  access-type: jdbc
   bot-api-url: "http://localhost:8090"
+
 
 spring:
   datasource:
