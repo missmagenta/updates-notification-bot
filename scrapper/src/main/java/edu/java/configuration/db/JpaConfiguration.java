@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(prefix = "app", name = "access-type", havingValue = "jpa")
+@ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jpa")
 @RequiredArgsConstructor
 @ComponentScan("edu.java.domain.jpa")
 public class JpaConfiguration {
@@ -23,7 +23,7 @@ public class JpaConfiguration {
         return new JpaLinkService(jpaLinkDao, jpaChatDao);
     }
 
-    @Bean("jpaChatService")
+    @Bean("jpaTgChatService")
     public JpaChatService jpaChatService() {
         return new JpaChatService(jpaChatDao, jpaLinkDao);
     }

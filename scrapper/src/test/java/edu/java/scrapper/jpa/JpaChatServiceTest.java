@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @TestPropertySource(properties = "spring.liquibase.enabled=false")
-public class JpaChatServiceTest extends IntegrationEnvironment {
+class JpaChatServiceTest extends IntegrationEnvironment {
     @Autowired
     private JpaChatDao jpaChatDao;
 

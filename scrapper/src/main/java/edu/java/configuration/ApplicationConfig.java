@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 public record ApplicationConfig(
     @NotNull Scheduler scheduler,
-    @NotNull AccessType accessType,
+    @NotNull AccessType databaseAccessType,
     @NotNull String botApiUrl
 ) {
 }

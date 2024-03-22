@@ -35,7 +35,7 @@ public class LinkUpdaterImpl implements LinkUpdater {
         LinkParserHandler linkParserHandler,
         GitHubUpdateHandler gitHubUpdateHandler,
         StackOverFlowUpdateHandler stackOverFlowUpdateHandler,
-        @Qualifier("jdbcLinkService") LinkService linkService
+        @Qualifier("jpaLinkService") LinkService linkService
     ) {
         this.restBotUpdateSender = restBotUpdateSender;
         this.linkParserHandler = linkParserHandler;

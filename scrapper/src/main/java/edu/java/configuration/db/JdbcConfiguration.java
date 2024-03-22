@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
-@ConditionalOnProperty(prefix = "app", name = "access-type", havingValue = "jdbc")
+@ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jdbc")
 @RequiredArgsConstructor
 public class JdbcConfiguration {
     private final JdbcTemplate jdbcTemplate;

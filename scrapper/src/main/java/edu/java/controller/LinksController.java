@@ -34,7 +34,7 @@ public class LinksController {
     public static final String TG_CHAT_ID = "Tg-Chat-Id";
     private final LinkService linkService;
 
-    public LinksController(@Qualifier("jdbcLinkService") LinkService linkService) {
+    public LinksController(@Qualifier("jpaLinkService") LinkService linkService) {
         this.linkService = linkService;
     }
 

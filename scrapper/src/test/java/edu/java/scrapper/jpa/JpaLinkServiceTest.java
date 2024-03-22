@@ -8,18 +8,19 @@ import edu.java.model.Link;
 import edu.java.scrapper.IntegrationEnvironment;
 import edu.java.service.jpa.JpaLinkService;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @TestPropertySource(properties = "spring.liquibase.enabled=false")
-public class JpaLinkServiceTest extends IntegrationEnvironment {
+class JpaLinkServiceTest extends IntegrationEnvironment {
 
     @Autowired
     JpaLinkDao jpaLinkDao;
@@ -33,7 +34,7 @@ public class JpaLinkServiceTest extends IntegrationEnvironment {
     @Test
     void addTest() {
         Chat chat = new Chat();
-        chat.setId(666);
+        chat.setId(888);
         jpaChatDao.save(chat);
 
         Link link = new Link();
@@ -41,8 +42,7 @@ public class JpaLinkServiceTest extends IntegrationEnvironment {
         link.setName(url);
         link.setLastUpdateDate(LocalDateTime.now());
 
-
-        LinkResponse response = jpaLinkService.add(chat.getId(), url);
+        LinkResponse response = jpaLinkService.add(888, url);
         Link addedLink = jpaLinkDao.findById(response.id()).get();
 
         assertAll(
@@ -68,10 +68,11 @@ public class JpaLinkServiceTest extends IntegrationEnvironment {
         jpaLinkDao.save(link);
 
         LinkResponse response = jpaLinkService.remove(chat.getId(), link.getName());
+        Optional<Link> deletedLink = jpaLinkDao.findById(response.id());
 
         assertAll(
-            () -> assertNull(response)
+            () -> assertEquals(url, response.url()),
+            () -> assertFalse(deletedLink.get().getChats().contains(chat))
         );
-
     }
 }

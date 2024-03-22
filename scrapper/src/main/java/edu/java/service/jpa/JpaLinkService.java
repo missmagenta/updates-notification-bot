@@ -34,9 +34,10 @@ public class JpaLinkService implements LinkService {
     @Override
     public LinkResponse remove(int tgChatId, String url) {
         Chat chat = jpaChatDao.findById(tgChatId).orElseThrow();
-        Link link = jpaLinkDao.findLinkByChatAndUrl(chat, url).orElseThrow();
+        Link link = jpaLinkDao.findLinkByChatsAndName(chat, url).orElseThrow();
 
         link.deleteChat(chat);
+        jpaLinkDao.save(link);
 
         return new LinkResponse(link.getId(), link.getName());
     }
@@ -44,7 +45,7 @@ public class JpaLinkService implements LinkService {
     @Override
     public ListLinkResponse listAll(int tgChatId) {
         Chat chat = jpaChatDao.findById(tgChatId).orElseThrow();
-        List<Link> chatLinks = jpaLinkDao.findAllLinksPerChat(chat).orElseThrow();
+        List<Link> chatLinks = jpaLinkDao.findAllLinksByChats(chat);
         List<LinkResponse> responses = chatLinks
             .stream()
             .map(link -> new LinkResponse(link.getId(), link.getName()))
@@ -61,7 +62,7 @@ public class JpaLinkService implements LinkService {
     @Override
     public ListLinkResponse findNotUpdatedForLongTime(long seconds) {
         LocalDateTime threshold = LocalDateTime.now().minusSeconds(seconds);
-        List<LinkResponse> responses = jpaLinkDao.findByLastUpdatedBefore(threshold)
+        List<LinkResponse> responses = jpaLinkDao.findByLastUpdateDateBefore(threshold)
             .stream()
             .map(link -> new LinkResponse(link.getId(), link.getName()))
             .toList();
