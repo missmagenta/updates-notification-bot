@@ -26,7 +26,7 @@ public class TgChatController {
     private final TgChatService chatService;
 
     public TgChatController(
-        @Qualifier("jdbcTgChatService") TgChatService chatService) {
+        @Qualifier("jpaTgChatService") TgChatService chatService) {
         this.chatService = chatService;
     }
 

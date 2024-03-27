@@ -1,6 +1,6 @@
 package edu.java.bot.handler;
 
-import edu.java.bot.handler.enums.Command;
+import edu.java.bot.handler.enums.CommandName;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import edu.java.bot.utils.ConstantReplies;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +21,11 @@ public class CommandsHandler {
         @Autowired UntrackCommand untrackCommand,
         @Autowired ListCommand listCommand) {
         this.commands = Map.of(
-            Command.START_COMMAND.getValue(), startCommand,
-            Command.HELP_COMMAND.getValue(), helpCommand,
-            Command.TRACK_COMMAND.getValue(), trackCommand,
-            Command.UNTRACK_COMMAND.getValue(), untrackCommand,
-            Command.LIST_COMMAND.getValue(), listCommand
+            CommandName.START_COMMAND.getValue(), startCommand,
+            CommandName.HELP_COMMAND.getValue(), helpCommand,
+            CommandName.TRACK_COMMAND.getValue(), trackCommand,
+            CommandName.UNTRACK_COMMAND.getValue(), untrackCommand,
+            CommandName.LIST_COMMAND.getValue(), listCommand
         );
     }
 

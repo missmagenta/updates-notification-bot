@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Command {
+public enum CommandName {
     START_COMMAND("/start", "Start using the bot"),
     HELP_COMMAND("/help", "Get a list of available commands"),
     TRACK_COMMAND("/track", "Start tracking service"),

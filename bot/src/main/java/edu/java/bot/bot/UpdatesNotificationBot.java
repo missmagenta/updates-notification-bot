@@ -1,7 +1,7 @@
 package edu.java.bot.bot;
 
 import edu.java.bot.configuration.ApplicationConfig;
-import edu.java.bot.handler.enums.Command;
+import edu.java.bot.handler.enums.CommandName;
 import edu.java.bot.utils.ConstantReplies;
 import edu.java.bot.handler.CommandsHandler;
 import jakarta.validation.constraints.NotNull;
@@ -59,7 +59,7 @@ public class UpdatesNotificationBot extends TelegramLongPollingBot {
 
     public void addCommandsToMenu() {
         SetMyCommands setMyCommands = new SetMyCommands();
-        setMyCommands.setCommands(Arrays.stream(Command.values()).
+        setMyCommands.setCommands(Arrays.stream(CommandName.values()).
             map(command -> new BotCommand(command.getValue(), command.getDescription())).
             toList());
         try {
