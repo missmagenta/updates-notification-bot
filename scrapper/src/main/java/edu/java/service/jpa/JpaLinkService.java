@@ -22,9 +22,10 @@ public class JpaLinkService implements LinkService {
     @Override
     public LinkResponse add(int tgChatId, String url) {
         Chat chat = jpaChatDao.findById(tgChatId).orElseThrow();
-        Link link = new Link();
-        link.setName(url);
-        link.setLastUpdateDate(LocalDateTime.now());
+        Link link = Link.builder()
+            .name(url)
+            .lastUpdateDate(LocalDateTime.now())
+            .build();
         link.addChat(chat);
 
         link = jpaLinkDao.save(link);
