@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Component
@@ -17,30 +18,32 @@ import java.util.List;
 public class StackOverFlowUpdateHandler {
     private final StackOverFlowClient stackOverFlowClient;
 
-    public List<String> handleAnswers(String questionId, LocalDateTime lastUpdateDate) {
-
-        return stackOverFlowClient.fetchAnswerEvents(questionId, lastUpdateDate)
+    public List<String> handleAnswers(String questionId, String lastUpdateDate) {
+        LocalDateTime lastUpdateLocal = ZonedDateTime.parse(lastUpdateDate).toLocalDateTime();
+        return stackOverFlowClient.fetchAnswerEvents(questionId, lastUpdateLocal)
             .getAnswers()
             .stream()
-            .filter(ans -> ans.creationDate().isAfter(lastUpdateDate.atOffset(ZoneOffset.UTC)))
+            .filter(ans -> ans.creationDate().isAfter(OffsetDateTime.parse(lastUpdateDate)))
             .map(this::getAnswerContents)
             .toList();
     }
 
-    public List<String> handleComments(String questionId, LocalDateTime lastUpdate) {
-        return stackOverFlowClient.fetchCommentEvents(questionId, lastUpdate)
+    public List<String> handleComments(String questionId, String lastUpdateDate) {
+        LocalDateTime lastUpdateLocal = ZonedDateTime.parse(lastUpdateDate).toLocalDateTime();
+        return stackOverFlowClient.fetchCommentEvents(questionId, lastUpdateLocal)
             .getComments()
             .stream()
-            .filter(ans -> ans.creationDate().isAfter(lastUpdate.atOffset(ZoneOffset.UTC)))
+            .filter(ans -> ans.creationDate().isAfter(OffsetDateTime.parse(lastUpdateDate)))
             .map(this::getCommentContents)
             .toList();
     }
 
-    public List<String> handleRelatedQuestions(String questionId, LocalDateTime lastUpdate) {
-        return stackOverFlowClient.fetchRelatedQuestionsEvents(questionId, lastUpdate)
+    public List<String> handleRelatedQuestions(String questionId, String lastUpdateDate) {
+        LocalDateTime lastUpdateLocal = ZonedDateTime.parse(lastUpdateDate).toLocalDateTime();
+        return stackOverFlowClient.fetchRelatedQuestionsEvents(questionId, lastUpdateLocal)
             .getRelatedQuestions()
             .stream()
-            .filter(ans -> ans.creationDate().isAfter(lastUpdate.atOffset(ZoneOffset.UTC)))
+            .filter(ans -> ans.creationDate().isAfter(OffsetDateTime.parse(lastUpdateDate)))
             .map(this::getRelationQuestion)
             .toList();
     }

@@ -7,6 +7,11 @@ app:
   database-access-type: jpa
   bot-api-url: "http://localhost:8090"
 
+retry:
+  max-attempts: 3
+  strategy: linear
+  interval: 3s
+  codes: 500
 
 spring:
   datasource:
@@ -18,6 +23,12 @@ spring:
     name: scrapper
   codec:
     max-in-memory-size: 500KB
+  cache:
+    caffeine:
+      spec: maximumSize=1000000,expireAfterAccess=600s
+    cache-names:
+      - buckets
+
 
 springdoc:
   swagger-ui:
@@ -28,3 +39,24 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: buckets
+      url: /links(/|\?)?.*
+      rate-limits:
+        - expression: "@securityService.getClientIP(#this)"
+          bandwidths:
+            - capacity: 1
+              time: 5
+              unit: seconds
+    - cache-name: buckets
+      url: /tg-chat(/|\?)?.*
+      rate-limits:
+        - expression: "@securityService.getClientIP(#this)"
+          bandwidths:
+            - capacity: 1
+              time: 5
+              unit: seconds

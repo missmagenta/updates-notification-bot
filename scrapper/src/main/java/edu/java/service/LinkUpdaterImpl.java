@@ -84,17 +84,17 @@ public class LinkUpdaterImpl implements LinkUpdater {
         } else if (parsingResult instanceof StackOverFlowParsingResult stackOverFlowParsingResult) {
             List<String> answers = stackOverFlowUpdateHandler.handleAnswers(
                 stackOverFlowParsingResult.questionId(),
-                linkEntity.getLastUpdateDate()
+                linkEntity.getLastUpdateDate().toString()
             );
 
             List<String> comments = stackOverFlowUpdateHandler.handleComments(
                 stackOverFlowParsingResult.questionId(),
-                linkEntity.getLastUpdateDate()
+                linkEntity.getLastUpdateDate().toString()
             );
 
             List<String> relatedQuestions = stackOverFlowUpdateHandler.handleRelatedQuestions(
                 stackOverFlowParsingResult.questionId(),
-                linkEntity.getLastUpdateDate()
+                linkEntity.getLastUpdateDate().toString()
             );
 
             if (!answers.isEmpty() || !comments.isEmpty() || !relatedQuestions.isEmpty()) {
