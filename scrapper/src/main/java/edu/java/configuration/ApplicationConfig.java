@@ -1,6 +1,7 @@
 package edu.java.configuration;
 
 import edu.java.configuration.db.AccessType;
+import edu.java.configuration.kafka.info.KafkaTopic;
 import edu.java.scheduler.Scheduler;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,6 +12,11 @@ import org.springframework.validation.annotation.Validated;
 public record ApplicationConfig(
     @NotNull Scheduler scheduler,
     @NotNull AccessType databaseAccessType,
-    @NotNull String botApiUrl
+    @NotNull String botApiUrl,
+    @NotNull KafkaTopic kafkaTopic,
+    @NotNull String kafkaBootstrapAddress,
+    @NotNull String kafkaGroupId,
+    @NotNull String kafkaAutoOffsetReset,
+    @NotNull boolean useQueue
 ) {
 }

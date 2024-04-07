@@ -1,6 +1,14 @@
 app:
   telegram-token: ${TELEGRAM_BOT_TOKEN}
   name: "@updates_notification_bot"
+  kafka-topic:
+    topic-name: "topic1"
+    partitions-count: 10
+    replica-count: 1
+    dlq-suffix: "_dlq"
+  kafka-bootstrap-address: "localhost:19092"
+  kafka-group-id: "scrapper-group"
+  kafka-auto-offset-reset: "earliest"
 
 spring:
   application:

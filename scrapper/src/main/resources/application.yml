@@ -4,6 +4,15 @@ app:
     interval: 10s
     force-check-delay: 10s
 
+  kafka-topic:
+    topic-name: "topic1"
+    partitions-count: 10
+    replica-count: 1
+  kafka-bootstrap-address: "localhost:19092"
+  kafka-group-id: "notify-group"
+  kafka-auto-offset-reset: "earliest"
+  use-queue: true
+
   database-access-type: jpa
   bot-api-url: "http://localhost:8090"
 

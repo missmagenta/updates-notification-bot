@@ -11,7 +11,7 @@ import edu.java.model.Link;
 import edu.java.service.github.GitHubServiceUpdateResult;
 import edu.java.service.github.GitHubUpdateHandler;
 import edu.java.service.stackoverflow.StackOverFlowUpdateHandler;
-import edu.java.service.update.RestBotUpdateSender;
+import edu.java.service.update.UpdateSender;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LinkUpdaterImpl implements LinkUpdater {
-    private final RestBotUpdateSender restBotUpdateSender;
+    private final UpdateSender updateSender;
     private final LinkParserHandler linkParserHandler;
     private final GitHubUpdateHandler gitHubUpdateHandler;
     private final StackOverFlowUpdateHandler stackOverFlowUpdateHandler;
@@ -31,13 +31,13 @@ public class LinkUpdaterImpl implements LinkUpdater {
     private static final Long PERIOD_TO_CHECK_LINK_SECONDS = 500L;
 
     public LinkUpdaterImpl(
-        RestBotUpdateSender restBotUpdateSender,
+        UpdateSender updateSender,
         LinkParserHandler linkParserHandler,
         GitHubUpdateHandler gitHubUpdateHandler,
         StackOverFlowUpdateHandler stackOverFlowUpdateHandler,
         @Qualifier("jpaLinkService") LinkService linkService
     ) {
-        this.restBotUpdateSender = restBotUpdateSender;
+        this.updateSender = updateSender;
         this.linkParserHandler = linkParserHandler;
         this.gitHubUpdateHandler = gitHubUpdateHandler;
         this.stackOverFlowUpdateHandler = stackOverFlowUpdateHandler;
@@ -57,7 +57,7 @@ public class LinkUpdaterImpl implements LinkUpdater {
             ParsingResult parsingResult = linkParserHandler.checkLink(link.url());
             List<String> eventDescriptions = collectEventUpdatesFromExternalHandlers(parsingResult, linkEntity);
             eventDescriptions.forEach(eventDescription ->
-                restBotUpdateSender.sendUpdates(new LinkUpdateRequest(
+                updateSender.sendUpdate(new LinkUpdateRequest(
                     linkEntity.getId(),
                     linkEntity.getName(),
                     eventDescription,

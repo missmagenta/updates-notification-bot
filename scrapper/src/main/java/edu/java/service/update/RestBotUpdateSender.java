@@ -3,14 +3,13 @@ package edu.java.service.update;
 import edu.java.client.bot.BotClient;
 import edu.java.dto.request.LinkUpdateRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
-public class RestBotUpdateSender {
+public class RestBotUpdateSender implements UpdateSender {
     private final BotClient botClient;
 
-    public void sendUpdates(LinkUpdateRequest linkUpdateRequest) {
+    @Override
+    public void sendUpdate(LinkUpdateRequest linkUpdateRequest) {
         botClient.sendUpdate(
             linkUpdateRequest.id(),
             linkUpdateRequest.url(),
