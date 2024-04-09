@@ -42,8 +42,7 @@ public class ClientConfiguration {
                     .defaultCodecs()
                     .maxInMemorySize(500 * 1024 * 1024))
                 .build())
-            .build()
-            .mutate()
+
             .filter(this::applyRetry)
             .build();
         HttpServiceProxyFactory clientFactory =
